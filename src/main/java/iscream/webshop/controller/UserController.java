@@ -46,7 +46,7 @@ public class UserController {
         try {
             String token = userService.login(body, authManager);
             return new JWTPayload(token, "", true);
-        }catch (AuthenticationException authExc){
+        } catch (AuthenticationException authExc){
             return new JWTPayload("", INVALID_PASSWORD, false);
         }
     }

@@ -2,6 +2,7 @@ package iscream.webshop.service;
 
 import iscream.webshop.DAO.UserDAO;
 import iscream.webshop.model.User;
+import iscream.webshop.model.UserRole;
 import iscream.webshop.record.ChangePassword;
 import iscream.webshop.record.LoginRequest;
 import iscream.webshop.record.RegisterRequest;
@@ -46,7 +47,7 @@ public class UserService implements UserDetailsService {
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         authManager.authenticate(authInputToken);
         User user = userDAO.getUserByEmail(request.email()).get();
-        return jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getId(), user.isDefault_pass());
+        return jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getId());
     }
 
 
@@ -69,10 +70,10 @@ public class UserService implements UserDetailsService {
 
 //        String encodedPass = passwordEncoder.encode(UUID.randomUUID().toString().replace("-", "").substring(0,7));
         String encodedPass = passwordEncoder.encode(DEFAULT_PASSWORD);
-        User newUser = new User(registerRequest.name(), registerRequest.email(), registerRequest.role(), encodedPass, true);
+        User newUser = new User(registerRequest.name(), registerRequest.email(), UserRole.USER, encodedPass);
         newUser.setPassword(encodedPass);
         userRepository.save(newUser);
-        return jwtUtil.generateToken(newUser.getEmail(), newUser.getRole(), newUser.getName(), newUser.getId(), false);
+        return jwtUtil.generateToken(newUser.getEmail(), newUser.getRole(), newUser.getName(), newUser.getId());
     }
 
     public Optional<User> getUserById(Long id) {
@@ -89,10 +90,9 @@ public class UserService implements UserDetailsService {
 
         String encodedPass = passwordEncoder.encode(body.newPassword());
         user.setPassword(encodedPass);
-        user.setDefault_pass(false);
         userDAO.updatePassword(user.getId(),user);
 
-        return jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getId(), user.isDefault_pass());
+        return jwtUtil.generateToken(user.getEmail(), user.getRole(), user.getName(), user.getId());
     }
 
     public User getAuthUser (String email) {

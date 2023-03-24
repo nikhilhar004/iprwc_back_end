@@ -2,6 +2,6 @@ package iscream.webshop.model;
 
 public enum UserRole {
 
-    MEDEWERKER,
+    USER,
     ADMIN
 }
