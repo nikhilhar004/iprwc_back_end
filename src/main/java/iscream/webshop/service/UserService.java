@@ -28,7 +28,6 @@ public class UserService implements UserDetailsService {
     private static final String USER_ALREADY_EXISTS = "gebuiker bestaat al";
     private static final String COULD_NOT_FIND_USER_WITH_EMAIL = "Could not findUser with email:";
     private static final String DEFAULT_PASSWORD = "Medewerker@";
-    private static final String PASSWORD_DOES_NOT_MATCH = "Wachtwoord komt niet overeen";
 
     private final String ROLE_PREFIX = "ROLE_";
     private UserDAO userDAO;
@@ -37,12 +36,7 @@ public class UserService implements UserDetailsService {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private UserRepository userRepository;
 
-    /**
-     * Match user credentials with de credentials in database.
-     * @param request - email and password
-     * @param authManager
-     * @return JWT token if user exists and credentials match
-     */
+
     public String login(LoginRequest request, AuthenticationManager authManager) {
         UsernamePasswordAuthenticationToken authInputToken = new UsernamePasswordAuthenticationToken(request.email(), request.password());
         authManager.authenticate(authInputToken);
@@ -68,7 +62,6 @@ public class UserService implements UserDetailsService {
         Optional<User> user = userDAO.getUserByEmail(registerRequest.email());
         if (user.isPresent()) return USER_ALREADY_EXISTS;
 
-//        String encodedPass = passwordEncoder.encode(UUID.randomUUID().toString().replace("-", "").substring(0,7));
         String encodedPass = passwordEncoder.encode(DEFAULT_PASSWORD);
         User newUser = new User(registerRequest.name(), registerRequest.email(), UserRole.USER, encodedPass);
         newUser.setPassword(encodedPass);

@@ -35,6 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/auth/user").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/auth/changepassword").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/icecream").hasAnyRole("ADMIN")
 
                 .and()
                 .userDetailsService(userService)

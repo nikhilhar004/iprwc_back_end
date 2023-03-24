@@ -19,7 +19,7 @@ public class UserDAO {
     }
 
     public User updatePassword(Long id, User newUser) {
-        userRepository.updatePassword(newUser.getPassword(), false, id);
+        userRepository.updatePassword(newUser.getPassword(),  id);
         return newUser;
 
     }
