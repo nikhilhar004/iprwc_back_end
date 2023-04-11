@@ -4,6 +4,7 @@ import iscream.webshop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,8 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/auth/user").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/api/auth/changepassword").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/icecream").hasAnyRole("ADMIN")
-
+//                .antMatchers(HttpMethod.POST,"/api/icecream").hasAnyRole("ADMIN")
                 .and()
                 .userDetailsService(userService)
                 .exceptionHandling()
@@ -44,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         http.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);
     }
 

@@ -25,14 +25,14 @@ public class JWTUtil {
                 .withClaim("name", name)
                 .withClaim("id", id)
                 .withIssuedAt(new Date())
-                .withIssuer("Van Der Lelie")
+                .withIssuer("Iscream")
                 .sign(Algorithm.HMAC256(secret));
     }
 
     public String validateTokenAndRetrieveSubject(String token)throws JWTVerificationException {
         JWTVerifier verifier = JWT.require(Algorithm.HMAC256(secret))
                 .withSubject("User Details")
-                .withIssuer("Van Der Lelie")
+                .withIssuer("Iscream")
                 .build();
         DecodedJWT jwt = verifier.verify(token);
         return jwt.getClaim("email").asString();
